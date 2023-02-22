@@ -1,0 +1,54 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+	globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Property
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["Admins"]
+				operations: [create, update, read, delete]
+			}
+			{ allow: groups, groups: ["Users"], operations: [read] }
+			{ allow: owner }
+		]
+	)
+	{
+	pk: String! @primaryKey(sortKeyFields: ["sk"]) #pk will be made up of [add1]#[add2]
+	sk: String! #sk will be made up of [zip]
+	num_bed: Float
+	num_bath: Float
+	total_sqft: Int @index(name: "bySqftBySalePriceByBedByBath", sortKeyFields: ["sale_price", "num_bed", "num_bath"])
+	above_grade_sqft: Int
+	upper_sqft: Int
+	main_sqft: Int
+	fininshed_basement_sqft: Int
+	unfininshed_basement_sqft: Int
+	list_price: Int
+	sale_price: Int @index(name: "bySalePriceByTotalSqftByBedByBath", sortKeyFields: ["total_sqft", "num_bed", "num_bath"])
+	cma_comparables: [CMA] @manyToMany(relationName: "PropertyCMAs")
+}
+
+type CMA
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["Admins"]
+				operations: [create, update, read, delete]
+			}
+			{ allow: owner }
+		]
+	)
+	{
+	pk: String! @primaryKey(sortKeyFields: ["sk"]) #pk will be created_by email (used for login)
+	sk: String! #sk will be composed of created_at
+	cma_label: String #this is a friendly name
+	client_name: String @index(name:"byClientByDate", sortKeyFields: ["sk"])
+	property: Property
+	cma_comparables: [Property] @manyToMany(relationName: "PropertyCMAs")
+}
