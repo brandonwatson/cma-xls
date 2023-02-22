@@ -1,23 +1,29 @@
 import './App.css'
-import { withAuthenticator } from '@aws-amplify/ui-react'
+
+//React imports
 import { Routes, Route } from 'react-router-dom'
+
+//aws imports
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import { DataStore } from 'aws-amplify'
+import '@aws-amplify/ui-react/styles.css'
+
+//Compenent Pages
 import Home from './pages/Home'
 import Search from './pages/Search'
 import About from './pages/About'
 import Nomatch from './pages/Nomatch'
 import Navbar from './components/Navbar'
 
-//roboto font
+//Roboto font imports
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
-//amplify UI auth UX
-import '@aws-amplify/ui-react/styles.css'
-
 
 function App({user, signOut}) {
+  DataStore.start()
   return (
     <>
       <Navbar signOut={signOut}/>

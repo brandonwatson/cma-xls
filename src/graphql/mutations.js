@@ -19,23 +19,7 @@ export const createProperty = /* GraphQL */ `
       unfininshed_basement_sqft
       list_price
       sale_price
-      cma_comparables {
-        items {
-          id
-          propertyPk
-          propertysk
-          cMAPk
-          cMAsk
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
+      property_id
       createdAt
       updatedAt
       _version
@@ -63,23 +47,7 @@ export const updateProperty = /* GraphQL */ `
       unfininshed_basement_sqft
       list_price
       sale_price
-      cma_comparables {
-        items {
-          id
-          propertyPk
-          propertysk
-          cMAPk
-          cMAsk
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
+      property_id
       createdAt
       updatedAt
       _version
@@ -107,23 +75,7 @@ export const deleteProperty = /* GraphQL */ `
       unfininshed_basement_sqft
       list_price
       sale_price
-      cma_comparables {
-        items {
-          id
-          propertyPk
-          propertysk
-          cMAPk
-          cMAsk
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
+      property_id
       createdAt
       updatedAt
       _version
@@ -143,7 +95,7 @@ export const createCMA = /* GraphQL */ `
       sk
       cma_label
       client_name
-      property {
+      listing {
         pk
         sk
         num_bed
@@ -156,10 +108,7 @@ export const createCMA = /* GraphQL */ `
         unfininshed_basement_sqft
         list_price
         sale_price
-        cma_comparables {
-          nextToken
-          startedAt
-        }
+        property_id
         createdAt
         updatedAt
         _version
@@ -167,28 +116,14 @@ export const createCMA = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      cma_comparables {
-        items {
-          id
-          propertyPk
-          propertysk
-          cMAPk
-          cMAsk
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
+      cma_id
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      cMAListingPk
+      cMAListingSk
       owner
     }
   }
@@ -203,7 +138,7 @@ export const updateCMA = /* GraphQL */ `
       sk
       cma_label
       client_name
-      property {
+      listing {
         pk
         sk
         num_bed
@@ -216,10 +151,7 @@ export const updateCMA = /* GraphQL */ `
         unfininshed_basement_sqft
         list_price
         sale_price
-        cma_comparables {
-          nextToken
-          startedAt
-        }
+        property_id
         createdAt
         updatedAt
         _version
@@ -227,28 +159,14 @@ export const updateCMA = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      cma_comparables {
-        items {
-          id
-          propertyPk
-          propertysk
-          cMAPk
-          cMAsk
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
+      cma_id
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      cMAListingPk
+      cMAListingSk
       owner
     }
   }
@@ -263,7 +181,7 @@ export const deleteCMA = /* GraphQL */ `
       sk
       cma_label
       client_name
-      property {
+      listing {
         pk
         sk
         num_bed
@@ -276,10 +194,7 @@ export const deleteCMA = /* GraphQL */ `
         unfininshed_basement_sqft
         list_price
         sale_price
-        cma_comparables {
-          nextToken
-          startedAt
-        }
+        property_id
         createdAt
         updatedAt
         _version
@@ -287,23 +202,26 @@ export const deleteCMA = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      cma_comparables {
-        items {
-          id
-          propertyPk
-          propertysk
-          cMAPk
-          cMAsk
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
+      cma_id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      cMAListingPk
+      cMAListingSk
+      owner
+    }
+  }
+`;
+export const createComparable = /* GraphQL */ `
+  mutation CreateComparable(
+    $input: CreateComparableInput!
+    $condition: ModelComparableConditionInput
+  ) {
+    createComparable(input: $input, condition: $condition) {
+      pk
+      sk
       createdAt
       updatedAt
       _version
@@ -313,77 +231,14 @@ export const deleteCMA = /* GraphQL */ `
     }
   }
 `;
-export const createPropertyCMAs = /* GraphQL */ `
-  mutation CreatePropertyCMAs(
-    $input: CreatePropertyCMAsInput!
-    $condition: ModelPropertyCMAsConditionInput
+export const updateComparable = /* GraphQL */ `
+  mutation UpdateComparable(
+    $input: UpdateComparableInput!
+    $condition: ModelComparableConditionInput
   ) {
-    createPropertyCMAs(input: $input, condition: $condition) {
-      id
-      propertyPk
-      propertysk
-      cMAPk
-      cMAsk
-      property {
-        pk
-        sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        cma_comparables {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      cMA {
-        pk
-        sk
-        cma_label
-        client_name
-        property {
-          pk
-          sk
-          num_bed
-          num_bath
-          total_sqft
-          above_grade_sqft
-          upper_sqft
-          main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
-          list_price
-          sale_price
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        cma_comparables {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
+    updateComparable(input: $input, condition: $condition) {
+      pk
+      sk
       createdAt
       updatedAt
       _version
@@ -393,157 +248,14 @@ export const createPropertyCMAs = /* GraphQL */ `
     }
   }
 `;
-export const updatePropertyCMAs = /* GraphQL */ `
-  mutation UpdatePropertyCMAs(
-    $input: UpdatePropertyCMAsInput!
-    $condition: ModelPropertyCMAsConditionInput
+export const deleteComparable = /* GraphQL */ `
+  mutation DeleteComparable(
+    $input: DeleteComparableInput!
+    $condition: ModelComparableConditionInput
   ) {
-    updatePropertyCMAs(input: $input, condition: $condition) {
-      id
-      propertyPk
-      propertysk
-      cMAPk
-      cMAsk
-      property {
-        pk
-        sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        cma_comparables {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      cMA {
-        pk
-        sk
-        cma_label
-        client_name
-        property {
-          pk
-          sk
-          num_bed
-          num_bath
-          total_sqft
-          above_grade_sqft
-          upper_sqft
-          main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
-          list_price
-          sale_price
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        cma_comparables {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const deletePropertyCMAs = /* GraphQL */ `
-  mutation DeletePropertyCMAs(
-    $input: DeletePropertyCMAsInput!
-    $condition: ModelPropertyCMAsConditionInput
-  ) {
-    deletePropertyCMAs(input: $input, condition: $condition) {
-      id
-      propertyPk
-      propertysk
-      cMAPk
-      cMAsk
-      property {
-        pk
-        sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        cma_comparables {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      cMA {
-        pk
-        sk
-        cma_label
-        client_name
-        property {
-          pk
-          sk
-          num_bed
-          num_bath
-          total_sqft
-          above_grade_sqft
-          upper_sqft
-          main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
-          list_price
-          sale_price
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        cma_comparables {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
+    deleteComparable(input: $input, condition: $condition) {
+      pk
+      sk
       createdAt
       updatedAt
       _version

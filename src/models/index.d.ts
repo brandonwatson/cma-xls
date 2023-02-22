@@ -1,6 +1,6 @@
-import { ModelInit, MutableModel, __modelMeta__, CompositeIdentifier, ManagedIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, CompositeIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncItem } from "@aws-amplify/datastore";
 
 
 
@@ -23,7 +23,7 @@ type EagerProperty = {
   readonly unfininshed_basement_sqft?: number | null;
   readonly list_price?: number | null;
   readonly sale_price?: number | null;
-  readonly cma_comparables?: (PropertyCMAs | null)[] | null;
+  readonly property_id: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -45,7 +45,7 @@ type LazyProperty = {
   readonly unfininshed_basement_sqft?: number | null;
   readonly list_price?: number | null;
   readonly sale_price?: number | null;
-  readonly cma_comparables: AsyncCollection<PropertyCMAs>;
+  readonly property_id: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -65,9 +65,12 @@ type EagerCMA = {
   readonly sk: string;
   readonly cma_label?: string | null;
   readonly client_name?: string | null;
-  readonly cma_comparables?: (PropertyCMAs | null)[] | null;
+  readonly listing?: Property | null;
+  readonly cma_id: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly cMAListingPk?: string | null;
+  readonly cMAListingSk?: string | null;
 }
 
 type LazyCMA = {
@@ -79,9 +82,12 @@ type LazyCMA = {
   readonly sk: string;
   readonly cma_label?: string | null;
   readonly client_name?: string | null;
-  readonly cma_comparables: AsyncCollection<PropertyCMAs>;
+  readonly listing: AsyncItem<Property | undefined>;
+  readonly cma_id: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly cMAListingPk?: string | null;
+  readonly cMAListingSk?: string | null;
 }
 
 export declare type CMA = LazyLoading extends LazyLoadingDisabled ? EagerCMA : LazyCMA
@@ -90,40 +96,30 @@ export declare const CMA: (new (init: ModelInit<CMA>) => CMA) & {
   copyOf(source: CMA, mutator: (draft: MutableModel<CMA>) => MutableModel<CMA> | void): CMA;
 }
 
-type EagerPropertyCMAs = {
+type EagerComparable = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<PropertyCMAs, 'id'>;
+    identifier: CompositeIdentifier<Comparable, ['pk', 'sk']>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly id: string;
-  readonly propertyPk?: string | null;
-  readonly propertysk?: string | null;
-  readonly cMAPk?: string | null;
-  readonly cMAsk?: string | null;
-  readonly property: Property;
-  readonly cma: CMA;
+  readonly pk: string;
+  readonly sk: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyPropertyCMAs = {
+type LazyComparable = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<PropertyCMAs, 'id'>;
+    identifier: CompositeIdentifier<Comparable, ['pk', 'sk']>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly id: string;
-  readonly propertyPk?: string | null;
-  readonly propertysk?: string | null;
-  readonly cMAPk?: string | null;
-  readonly cMAsk?: string | null;
-  readonly property: AsyncItem<Property>;
-  readonly cma: AsyncItem<CMA>;
+  readonly pk: string;
+  readonly sk: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type PropertyCMAs = LazyLoading extends LazyLoadingDisabled ? EagerPropertyCMAs : LazyPropertyCMAs
+export declare type Comparable = LazyLoading extends LazyLoadingDisabled ? EagerComparable : LazyComparable
 
-export declare const PropertyCMAs: (new (init: ModelInit<PropertyCMAs>) => PropertyCMAs) & {
-  copyOf(source: PropertyCMAs, mutator: (draft: MutableModel<PropertyCMAs>) => MutableModel<PropertyCMAs> | void): PropertyCMAs;
+export declare const Comparable: (new (init: ModelInit<Comparable>) => Comparable) & {
+  copyOf(source: Comparable, mutator: (draft: MutableModel<Comparable>) => MutableModel<Comparable> | void): Comparable;
 }

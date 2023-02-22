@@ -87,21 +87,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "cma_comparables": {
-                    "name": "cma_comparables",
-                    "isArray": true,
-                    "type": {
-                        "model": "PropertyCMAs"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "property"
-                        ]
-                    }
+                "property_id": {
+                    "name": "property_id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -237,21 +228,32 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "cma_comparables": {
-                    "name": "cma_comparables",
-                    "isArray": true,
+                "listing": {
+                    "name": "listing",
+                    "isArray": false,
                     "type": {
-                        "model": "PropertyCMAs"
+                        "model": "Property"
                     },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_MANY",
+                        "connectionType": "HAS_ONE",
                         "associatedWith": [
-                            "cma"
+                            "pk",
+                            "sk"
+                        ],
+                        "targetNames": [
+                            "cMAListingPk",
+                            "cMAListingSk"
                         ]
                     }
+                },
+                "cma_id": {
+                    "name": "cma_id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -268,6 +270,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "cMAListingPk": {
+                    "name": "cMAListingPk",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cMAListingSk": {
+                    "name": "cMAListingSk",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -331,75 +347,22 @@ export const schema = {
                 }
             ]
         },
-        "PropertyCMAs": {
-            "name": "PropertyCMAs",
+        "Comparable": {
+            "name": "Comparable",
             "fields": {
-                "id": {
-                    "name": "id",
+                "pk": {
+                    "name": "pk",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
-                "propertyPk": {
-                    "name": "propertyPk",
+                "sk": {
+                    "name": "sk",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "propertysk": {
-                    "name": "propertysk",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "cMAPk": {
-                    "name": "cMAPk",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "cMAsk": {
-                    "name": "cMAsk",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "property": {
-                    "name": "property",
-                    "isArray": false,
-                    "type": {
-                        "model": "Property"
-                    },
                     "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "propertyPk",
-                            "propertysk"
-                        ]
-                    }
-                },
-                "cma": {
-                    "name": "cma",
-                    "isArray": false,
-                    "type": {
-                        "model": "CMA"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "cMAPk",
-                            "cMAsk"
-                        ]
-                    }
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -419,7 +382,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "PropertyCMAs",
+            "pluralName": "Comparables",
             "attributes": [
                 {
                     "type": "model",
@@ -428,20 +391,42 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byProperty",
                         "fields": [
-                            "propertyPk",
-                            "propertysk"
+                            "pk",
+                            "sk"
                         ]
                     }
                 },
                 {
-                    "type": "key",
+                    "type": "auth",
                     "properties": {
-                        "name": "byCMA",
-                        "fields": [
-                            "cMAPk",
-                            "cMAsk"
+                        "rules": [
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "Admins"
+                                ],
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "read",
+                                    "delete"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
                         ]
                     }
                 }
@@ -451,5 +436,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "04e36444835397ec020507ae2f9d3374"
+    "version": "906d1300814af79b4cfa25784ffedf77"
 };

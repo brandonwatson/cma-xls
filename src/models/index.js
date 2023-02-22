@@ -4,10 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Property, CMA, PropertyCMAs } = initSchema(schema);
+const { Property, CMA, Comparable } = initSchema(schema);
 
 export {
   Property,
   CMA,
-  PropertyCMAs
+  Comparable
 };

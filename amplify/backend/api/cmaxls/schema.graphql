@@ -29,7 +29,7 @@ type Property
 	unfininshed_basement_sqft: Int
 	list_price: Int
 	sale_price: Int @index(name: "bySalePriceByTotalSqftByBedByBath", sortKeyFields: ["total_sqft", "num_bed", "num_bath"])
-	cma_comparables: [CMA] @manyToMany(relationName: "PropertyCMAs")
+	property_id: ID!
 }
 
 type CMA
@@ -49,6 +49,24 @@ type CMA
 	sk: String! #sk will be composed of created_at
 	cma_label: String #this is a friendly name
 	client_name: String @index(name:"byClientByDate", sortKeyFields: ["sk"])
-	property: Property
-	cma_comparables: [Property] @manyToMany(relationName: "PropertyCMAs")
+	listing: Property @hasOne
+	cma_id: ID!
+}
+
+
+type Comparable
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["Admins"]
+				operations: [create, update, read, delete]
+			}
+			{ allow: owner }
+		]
+	)
+	{
+	pk: ID! @primaryKey(sortKeyFields: ["sk"]) #pk will be the cam_id value to identify the CMA
+	sk: ID! #sk will be the property_ 	id to identify a property to be included in the CMA
 }
