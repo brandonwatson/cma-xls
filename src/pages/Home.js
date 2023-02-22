@@ -32,27 +32,27 @@ async function InitData(allProperties, user)
     const listingProperty = new Property (allProperties.slice(0,1)[0])
     console.log("listingProperty:", listingProperty)
     
-    // try
-    // {
-    //     await DataStore.save(listingProperty)
-    //     console.log("inserted listing property: ", listingProperty)
-    // }
-    // catch (error)
-    // {
-    //     console.log("error writing listing property: ", error)
-    // }
+    try
+    {
+        await DataStore.save(listingProperty)
+        console.log("inserted listing property: ", listingProperty)
+    }
+    catch (error)
+    {
+        console.log("error writing listing property: ", error)
+    }
 
 
     for (let compPropCount=0; compPropCount < compPropSet.length; compPropCount++)
     {
         comparableProperties.push(new Property (compPropSet[compPropCount]))
         console.log("compProperties: ", comparableProperties[compPropCount])
-        // try {
-        //     await DataStore.save(comparableProperties[compPropCount])
-        //     console.log("Success inserting property: ", comprableProperties[compPropCount]);
-        // } catch (error) {
-        //     console.log("Error saving property", error);
-        // }
+        try {
+            await DataStore.save(comparableProperties[compPropCount])
+            console.log("Success inserting property: ", comparableProperties[compPropCount]);
+        } catch (error) {
+            console.log("Error saving property", error);
+        }
     }
 
     const cma = new CMA (
@@ -67,13 +67,13 @@ async function InitData(allProperties, user)
     )
     console.log("CMA: ", cma)
     
-    // try {
-    //     await DataStore.save(cma)
-    //     // console.log(cma.comparables)
-    //     console.log("success inserting CMA")
-    // } catch (error) {
-    //     console.log("error inserting CMA", error)
-    // }
+    try {
+        await DataStore.save(cma)
+        // console.log(cma.comparables)
+        console.log("success inserting CMA")
+    } catch (error) {
+        console.log("error inserting CMA", error)
+    }
 
 
     console.log("comparableProperties: ", comparableProperties.length)
@@ -87,12 +87,12 @@ async function InitData(allProperties, user)
         })
         console.log("comparable: ", comparable)
 
-        // try {
-        //     await DataStore.save(comparable)
-        //     console.log("success inserting Comparable")
-        // } catch (error) {
-        //     console.log("error inserting Comparable", error)
-        // }
+        try {
+            await DataStore.save(comparable)
+            console.log("success inserting Comparable")
+        } catch (error) {
+            console.log("error inserting Comparable", error)
+        }
     }
 }
 
