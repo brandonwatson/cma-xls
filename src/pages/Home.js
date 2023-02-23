@@ -5,13 +5,15 @@ import { useState, useEffect } from 'react'
 //import { withAuthenticator, Button, Heading } from '@aws-amplify/ui-react'
 
 //material UI imports
-import { Typography, Container, Button, Stack } from '@mui/material'
-// import { Container } from '@mui/material'
-// import { Button } from '@mui/material'
+import { Typography, Container, Button } from '@mui/material'
+import FiberNewIcon from '@mui/icons-material/FiberNew'
 
 //amplify imports
 import { DataStore } from 'aws-amplify'
 import { CMA, Property, Comparable } from '../models/'
+
+//CMA-XLS components
+import Cmalist from '../components/Cmalist' 
 
 //TEST DATA INIT
 import INIT_DATA from '../dynamo/amplify_init_data'
@@ -96,9 +98,19 @@ async function InitData(allProperties, user)
     }
 }
 
+
 function Home({signOut, user}) {
     //I will need to use react query but for now just use fetch against the API
-    const [cmaList, setCmaList] = useState()
+    const [cmalist, setCmalist] = useState([])
+
+    useEffect(() => {
+        async function getCmas() {
+            const allCmas = await DataStore.query(CMA)
+            setCmalist(allCmas)
+        }
+
+        getCmas()
+    }, []) //remember that this array are the state objects to watch to know when to rerun this
 
     function initDataHandler()
     {
@@ -109,28 +121,32 @@ function Home({signOut, user}) {
     {
         console.log(`New CMA button clicked`)
     }
-    
+
     return (
-    <Container>
-        <div>
-            <Typography variant='h4'>Hello, {user.attributes.email}  - Welcome to CMA-XLS Builder</Typography>
-        </div>
-        <div>
-            <Stack direction="row" spacing={2}>
+        <Container>
+            <div>
                 <Button
                     variant='contained'
-                    onClick = {initDataHandler}>Initialize
+                    size='large'
+                    onClick = {initDataHandler}>Initialize the App with New Data (DO NOT PUSH)
                 </Button>
+            </div>
+            <div>
+                <Typography variant='h4'>Hello, {user.attributes.email}  - Welcome to CMA-XLS Builder</Typography>
+            </div>
+
+            <div>
                 <Button
                     variant='contained'
+                    size='large'
+                    startIcon = {<FiberNewIcon />}
                     onClick = {newCmaClickHandler}>Create New CMA
                 </Button>
-            </Stack>
-        </div>
-        <div>
-            <Typography variant='h4'>Created CMAs</Typography>
-        </div>
-    </Container>
+                <Typography variant='h4'>Your CMAs</Typography>
+                <br/>
+                <Cmalist cmalist={cmalist} setCmalist={setCmalist} />
+            </div>
+        </Container>
     )
 }
 

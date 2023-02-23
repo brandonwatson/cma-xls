@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import { withAuthenticator, Button, Heading } from '@aws-amplify/ui-react'
+import { Button } from '@mui/material'
+import './Navbar.css'
 
 
 function Navbar({signOut}) {
@@ -8,17 +9,22 @@ return (
         <nav>
             <ul>
                 <li>
-                    <NavLink to="/">Home</NavLink>
+                    <NavLink to='/'>Home</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/search">Search</NavLink>
+                    <NavLink to='/search'>Search</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/about">About</NavLink>
+                    <NavLink to='/about'>About</NavLink>
                 </li>
             </ul>
         </nav>
-        <Button onClick={signOut}>Sign out</Button>
+        <Button
+            variant='contained'
+            color='secondary'
+            size='meidum'
+            onClick={signOut}>Sign out
+        </Button>
     </div>
     )
 }

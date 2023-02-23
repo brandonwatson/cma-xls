@@ -15,20 +15,27 @@ type Property
 			{ allow: groups, groups: ["Users"], operations: [read] }
 			{ allow: owner }
 		]
-	)
-	{
+	) {
 	pk: String! @primaryKey(sortKeyFields: ["sk"]) #pk will be made up of [add1]#[add2]
 	sk: String! #sk will be made up of [zip]
 	num_bed: Float
 	num_bath: Float
-	total_sqft: Int @index(name: "bySqftBySalePriceByBedByBath", sortKeyFields: ["sale_price", "num_bed", "num_bath"])
+	total_sqft: Int
+		@index(
+			name: "bySqftBySalePriceByBedByBath"
+			sortKeyFields: ["sale_price", "num_bed", "num_bath"]
+		)
 	above_grade_sqft: Int
 	upper_sqft: Int
 	main_sqft: Int
 	fininshed_basement_sqft: Int
 	unfininshed_basement_sqft: Int
 	list_price: Int
-	sale_price: Int @index(name: "bySalePriceByTotalSqftByBedByBath", sortKeyFields: ["total_sqft", "num_bed", "num_bath"])
+	sale_price: Int
+		@index(
+			name: "bySalePriceByTotalSqftByBedByBath"
+			sortKeyFields: ["total_sqft", "num_bed", "num_bath"]
+		)
 	property_id: ID!
 }
 
@@ -43,16 +50,14 @@ type CMA
 			}
 			{ allow: owner }
 		]
-	)
-	{
+	) {
 	pk: String! @primaryKey(sortKeyFields: ["sk"]) #pk will be created_by email (used for login)
 	sk: String! #sk will be composed of created_at
 	cma_label: String #this is a friendly name
-	client_name: String @index(name:"byClientByDate", sortKeyFields: ["sk"])
+	client_name: String @index(name: "byClientByDate", sortKeyFields: ["sk"])
 	listing: Property @hasOne
 	cma_id: ID!
 }
-
 
 type Comparable
 	@model
@@ -65,8 +70,7 @@ type Comparable
 			}
 			{ allow: owner }
 		]
-	)
-	{
-	pk: ID! @primaryKey(sortKeyFields: ["sk"]) #pk will be the cam_id value to identify the CMA
+	) {
+	pk: ID! @primaryKey(sortKeyFields: ["sk"]) #pk will be the cma_id value to identify the CMA
 	sk: ID! #sk will be the property_ 	id to identify a property to be included in the CMA
 }
