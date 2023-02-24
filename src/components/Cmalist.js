@@ -8,6 +8,8 @@ import { Card, Typography, CardActions, IconButton } from '@mui/material/'
 import Grid from '@mui/material/Unstable_Grid2'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import PersonIcon from '@mui/icons-material/Person'
+import HomeIcon from '@mui/icons-material/Home'
 
 //amplify imports
 import { DataStore } from 'aws-amplify'
@@ -59,9 +61,21 @@ function Cmalist({ cmalist, setCmalist }) {
                             {/* <Typography variant="h4" gutterBottom>
                                 CMA Created By: {item.pk}
                             </Typography> */}
-                            <Typography variant="h5" gutterBottom>
-                                For: {item.client_name}<br/>
-                                Listing Property: {item.cma_label}
+                            <Typography variant="h6" gutterBottom>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                }}>
+                                    <PersonIcon fontSize='large' sx={{ align: 'center'}}/><span>: {item.client_name}</span>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                }}>
+                                    <HomeIcon fontSize='large'/><span>: {item.cma_label}</span>
+                                </div>
                             </Typography>
                             <Cma key={item.sk} item={item} />
                             <CardActions disableSpacing>

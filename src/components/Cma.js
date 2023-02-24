@@ -26,9 +26,8 @@ function Cma({item}) {
         <div>
             <CardContent>
                 <Typography variant="h6">
-                    Properties Included:
+                    Properties Included: {comparables.length}
                 </Typography>
-                Number of properties: {comparables.length}
                 {/* <ul>
                 {comparables.map((item) => (
                             <li key={item.pk + item.sk}>

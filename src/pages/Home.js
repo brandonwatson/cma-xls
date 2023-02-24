@@ -131,7 +131,7 @@ function Home({signOut, user}) {
             pk: user.attributes.email,
             sk: new Date().toISOString(),
             client_name: "Input Client Name",
-            cma_label: "Input Target Property Address",
+            cma_label: "Listing Property Address",
             cma_id: uuidv4()
             //no added target listing property at this time
         })
