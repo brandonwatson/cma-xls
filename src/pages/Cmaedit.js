@@ -27,7 +27,7 @@ function Cmaedit({ user }) {
         async function getOneCma() {
             const oneCma = await DataStore.query(CMA, {pk: pk, sk: sk })
             setCma(oneCma)
-            
+
             const allComparables = await DataStore.query(Comparable, c => c.pk.eq(oneCma.cma_id))
             setComparables(allComparables)
         }
@@ -38,7 +38,7 @@ function Cmaedit({ user }) {
 
     return (
         <div>
-            {cma.cma_label}<br/>{cma.client_name}<br/>{comparables.length}
+            Listing: {cma.cma_label}<br/>Client: {cma.client_name}<br/>Properties: {comparables.length}
         </div>
     )
 }

@@ -83,7 +83,7 @@ function Cmalist({ cmalist, setCmalist }) {
                                         //setOpenStorycardEdit(true)
                                     }}
                                 >
-                                    <Link to={`/cmaedit/${item.sk}`}>
+                                    <Link to={`/cmaedit/${item.sk}`} style={{ textDecoration: 'none',color: 'inherit' }}>
                                         <EditIcon />
                                     </Link>
                                 </IconButton>

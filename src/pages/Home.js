@@ -130,8 +130,8 @@ function Home({signOut, user}) {
         const newCma = new CMA({
             pk: user.attributes.email,
             sk: new Date().toISOString(),
-            client_name: "Ripley",
-            cma_label: "This could be an address",
+            client_name: "Input Client Name",
+            cma_label: "Input Target Property Address",
             cma_id: uuidv4()
             //no added target listing property at this time
         })
@@ -148,13 +148,14 @@ function Home({signOut, user}) {
 
     return (
         <Container>
+            {/* THIS IS COMMENTED OUT BECAUSE I DONT LIKE LOOKING AT THE BUTTON
             <div>
                 <Button
                     variant='contained'
                     size='large'
                     onClick = {initDataHandler}>Initialize the App with New Data (DO NOT PUSH)
                 </Button>
-            </div>
+            </div> */}
             <div>
                 <Typography variant='h4'>Welcome to CMA-XLS Builder</Typography>
             </div>
