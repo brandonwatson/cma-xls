@@ -12,6 +12,7 @@ import '@aws-amplify/ui-react/styles.css'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import About from './pages/About'
+import Cmaedit from './pages/Cmaedit'
 import Nomatch from './pages/Nomatch'
 import Navbar from './components/Navbar'
 
@@ -31,6 +32,7 @@ function App({user, signOut}) {
         <Route path="/" element={<Home  user={user} />} />
         <Route path="/search" element={<Search user={user} />} />
         <Route path="/about" element={<About user={user} />} />
+        <Route path="/cmaedit/:sk" element={<Cmaedit user={user} />} />
         <Route path="*" element={<Nomatch user={user} />} />  {/*TODO: Implement*/}
       </Routes>
     </>

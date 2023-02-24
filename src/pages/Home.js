@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 //will replace the ux items with material UI
 //import { withAuthenticator, Button, Heading } from '@aws-amplify/ui-react'
@@ -18,11 +19,17 @@ import Cmalist from '../components/Cmalist'
 //TEST DATA INIT
 import INIT_DATA from '../dynamo/amplify_init_data'
 
-async function CreateNewCma(cma)
+async function InsertCma(cma)
 {
-    // await DataStore.save(
-    //     new CMA ({})
-    //     )
+    try {
+        await DataStore.save(cma)
+        // console.log(cma.comparables)
+        console.log("success inserting CMA")
+    } catch (error) {
+        console.log("error inserting CMA", error)
+    }
+
+    return true
 }
 
 async function InitData(allProperties, user)
@@ -68,14 +75,14 @@ async function InitData(allProperties, user)
         }
     )
     console.log("CMA: ", cma)
-    
-    try {
-        await DataStore.save(cma)
-        // console.log(cma.comparables)
-        console.log("success inserting CMA")
-    } catch (error) {
-        console.log("error inserting CMA", error)
-    }
+    await InsertCma(cma)
+    // try {
+    //     await DataStore.save(cma)
+    //     // console.log(cma.comparables)
+    //     console.log("success inserting CMA")
+    // } catch (error) {
+    //     console.log("error inserting CMA", error)
+    // }
 
 
     console.log("comparableProperties: ", comparableProperties.length)
@@ -119,7 +126,24 @@ function Home({signOut, user}) {
 
     function newCmaClickHandler()
     {
-        console.log(`New CMA button clicked`)
+        //console.log("uuid: ", uuidv4())
+        const newCma = new CMA({
+            pk: user.attributes.email,
+            sk: new Date().toISOString(),
+            client_name: "Ripley",
+            cma_label: "This could be an address",
+            cma_id: uuidv4()
+            //no added target listing property at this time
+        })
+
+        console.log(`New CMA button clicked: `, newCma)
+        if (InsertCma(newCma))
+        {
+            setCmalist([...cmalist, newCma])
+        }
+        else{
+            console.log("something did not come back from the write to remote dba in InsertCma")
+        }
     }
 
     return (
@@ -132,9 +156,8 @@ function Home({signOut, user}) {
                 </Button>
             </div>
             <div>
-                <Typography variant='h4'>Hello, {user.attributes.email}  - Welcome to CMA-XLS Builder</Typography>
+                <Typography variant='h4'>Welcome to CMA-XLS Builder</Typography>
             </div>
-
             <div>
                 <Button
                     variant='contained'
@@ -142,7 +165,7 @@ function Home({signOut, user}) {
                     startIcon = {<FiberNewIcon />}
                     onClick = {newCmaClickHandler}>Create New CMA
                 </Button>
-                <Typography variant='h4'>Your CMAs</Typography>
+                <Typography variant='h4'>{user.attributes.email}'s CMAs</Typography>
                 <br/>
                 <Cmalist cmalist={cmalist} setCmalist={setCmalist} />
             </div>

@@ -20,21 +20,22 @@ function Cma({item}) {
         }
 
         getComparables()
-    }, [])
+    }, )
 
     return (
         <div>
             <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6">
                     Properties Included:
                 </Typography>
-                <ul>
+                Number of properties: {comparables.length}
+                {/* <ul>
                 {comparables.map((item) => (
                             <li key={item.pk + item.sk}>
                                 Comparable Property: {item.sk}
                             </li>
                             ))}
-                </ul>
+                </ul> */}
             </CardContent>
         </div>
     )
