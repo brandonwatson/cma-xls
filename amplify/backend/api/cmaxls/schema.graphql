@@ -72,5 +72,5 @@ type Comparable
 		]
 	) {
 	pk: ID! @primaryKey(sortKeyFields: ["sk"]) #pk will be the cma_id value to identify the CMA
-	sk: ID! #sk will be the property_ 	id to identify a property to be included in the CMA
+	sk: ID! #sk will be the property_id to identify a property to be included in the CMA
 }

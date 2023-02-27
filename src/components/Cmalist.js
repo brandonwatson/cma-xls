@@ -1,6 +1,8 @@
 import './Cmalist.css'
 
 import React from 'react'
+
+import {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 
 //material UI imports
@@ -38,7 +40,32 @@ async function DeleteCma(pksk, setCmalist)
 }
 
 function Cmalist({ cmalist, setCmalist }) {
-    function onDeleteHandler(e, pksk)
+    const [propertyCount, setPropertyCount] = useState([])
+
+    const cmaidlist = cmalist.map(item => [item.cma_id])
+    let tmpval
+
+    // const tmpval = cmaidlist.reduce((c, id) => c.id('eq', id))
+    // console.log(tmpval)
+    
+    useEffect(() => {
+        async function getPropertyCount() {
+            const propertyresults = DataStore.query(Comparable, (c) => 
+                c.or((c) => 
+                    [c.pk.eq(cmaidlist[0]),
+                        c.pk.eq(cmaidlist[1])]
+                ))
+
+
+
+            //return propertyresults
+            setPropertyCount(propertyresults)
+        }
+
+        getPropertyCount()
+    }, [] )
+
+            function onDeleteHandler(e, pksk)
     {
         console.log("delete clicked: {", pksk.pk, ":", pksk.sk, "}" )
         DeleteCma(pksk, setCmalist)
@@ -46,6 +73,7 @@ function Cmalist({ cmalist, setCmalist }) {
 
     return (
         <div>
+            Property Count Vat: {propertyCount.length}
             <Grid container spacing={2}>
                 {cmalist.map((item) => (
                     <Grid xs={4} key={item.cma_id}>
@@ -75,6 +103,9 @@ function Cmalist({ cmalist, setCmalist }) {
                                     flexWrap: 'wrap',
                                 }}>
                                     <HomeIcon fontSize='large'/><span>: {item.cma_label}</span>
+                                </div>
+                                <div>
+                                    Properties Included: I need the right value here based on a query
                                 </div>
                             </Typography>
                             <Cma key={item.sk} item={item} />

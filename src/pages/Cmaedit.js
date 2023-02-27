@@ -14,6 +14,7 @@ import { DataStore } from 'aws-amplify'
 import { CMA, Property, Comparable } from '../models/'
 
 //CMA-XLS components
+import Propertycard from '../components/Propertycard'
 
 function Cmaedit({ user }) {
     const pk = user.attributes.email 
@@ -36,9 +37,21 @@ function Cmaedit({ user }) {
     }, []) //remember that this array are the state objects to watch to know when to rerun this
 
 
+    // <Cma key={item.sk} item={item} />
+
     return (
         <div>
-            Listing: {cma.cma_label}<br/>Client: {cma.client_name}<br/>Properties: {comparables.length}
+            Listing: {cma.cma_label}<br/>Client: {cma.client_name}<br/>
+            Properties: {comparables.length}
+            <div>
+                Insert the NEW property here
+            </div>
+            <div>
+                Insert the card based info per property here<br />
+                {comparables.map((item) => (
+                    <Propertycard key={item.pk + item.sk} item={item}/>
+                    ))}
+            </div>            
         </div>
     )
 }
