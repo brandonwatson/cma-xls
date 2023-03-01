@@ -24,7 +24,7 @@ import '@fontsource/roboto/700.css'
 
 
 function App({user, signOut}) {
-  DataStore.start()
+  //DataStore.start()
   return (
     <>
       <Navbar signOut={signOut}/>
@@ -32,7 +32,7 @@ function App({user, signOut}) {
         <Route path="/" element={<Home  user={user} />} />
         <Route path="/search" element={<Search user={user} />} />
         <Route path="/about" element={<About user={user} />} />
-        <Route path="/cmaedit/:sk" element={<Cmaedit user={user} />} />
+        <Route path="/cmaedit/:id" element={<Cmaedit user={user} />} />
         <Route path="*" element={<Nomatch user={user} />} />  {/*TODO: Implement*/}
       </Routes>
     </>

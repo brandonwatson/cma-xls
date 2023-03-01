@@ -25,6 +25,8 @@ export const onCreateProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -53,6 +55,8 @@ export const onUpdateProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -81,6 +85,8 @@ export const onDeleteProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -114,7 +120,36 @@ export const onCreateCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -157,7 +192,36 @@ export const onUpdateCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -200,7 +264,36 @@ export const onDeleteCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -210,57 +303,6 @@ export const onDeleteCMA = /* GraphQL */ `
       _lastChangedAt
       cMAListingPk
       cMAListingSk
-      owner
-    }
-  }
-`;
-export const onCreateComparable = /* GraphQL */ `
-  subscription OnCreateComparable(
-    $filter: ModelSubscriptionComparableFilterInput
-    $owner: String
-  ) {
-    onCreateComparable(filter: $filter, owner: $owner) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const onUpdateComparable = /* GraphQL */ `
-  subscription OnUpdateComparable(
-    $filter: ModelSubscriptionComparableFilterInput
-    $owner: String
-  ) {
-    onUpdateComparable(filter: $filter, owner: $owner) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const onDeleteComparable = /* GraphQL */ `
-  subscription OnDeleteComparable(
-    $filter: ModelSubscriptionComparableFilterInput
-    $owner: String
-  ) {
-    onDeleteComparable(filter: $filter, owner: $owner) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }

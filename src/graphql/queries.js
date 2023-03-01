@@ -22,6 +22,8 @@ export const getProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -62,6 +64,8 @@ export const listProperties = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
       }
       nextToken
@@ -101,6 +105,8 @@ export const syncProperties = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
       }
       nextToken
@@ -134,7 +140,36 @@ export const getCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -189,7 +224,13 @@ export const listCMAS = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
           owner
+        }
+        comparable_properties {
+          nextToken
+          startedAt
         }
         cma_id
         createdAt
@@ -243,7 +284,13 @@ export const syncCMAS = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
           owner
+        }
+        comparable_properties {
+          nextToken
+          startedAt
         }
         cma_id
         createdAt
@@ -253,80 +300,6 @@ export const syncCMAS = /* GraphQL */ `
         _lastChangedAt
         cMAListingPk
         cMAListingSk
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getComparable = /* GraphQL */ `
-  query GetComparable($pk: ID!, $sk: ID!) {
-    getComparable(pk: $pk, sk: $sk) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const listComparables = /* GraphQL */ `
-  query ListComparables(
-    $pk: ID
-    $sk: ModelIDKeyConditionInput
-    $filter: ModelComparableFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listComparables(
-      pk: $pk
-      sk: $sk
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        pk
-        sk
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncComparables = /* GraphQL */ `
-  query SyncComparables(
-    $filter: ModelComparableFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncComparables(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        pk
-        sk
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
@@ -370,6 +343,8 @@ export const propertiesByTotal_sqftAndSale_priceAndNum_bedAndNum_bath = /* Graph
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
       }
       nextToken
@@ -413,6 +388,8 @@ export const propertiesBySale_priceAndTotal_sqftAndNum_bedAndNum_bath = /* Graph
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
       }
       nextToken
@@ -461,7 +438,13 @@ export const cMASByClient_nameAndSk = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
           owner
+        }
+        comparable_properties {
+          nextToken
+          startedAt
         }
         cma_id
         createdAt

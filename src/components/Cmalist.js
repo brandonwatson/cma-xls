@@ -15,10 +15,9 @@ import HomeIcon from '@mui/icons-material/Home'
 
 //amplify imports
 import { DataStore } from 'aws-amplify'
-import { CMA, Comparable } from '../models/'
+import { CMA } from '../models/'
 
 import Cma from './Cma'
-import { red } from '@mui/material/colors'
 
 async function DeleteCma(pksk, setCmalist)
 {
@@ -50,22 +49,22 @@ function Cmalist({ cmalist, setCmalist }) {
     
     useEffect(() => {
         async function getPropertyCount() {
-            const propertyresults = DataStore.query(Comparable, (c) => 
-                c.or((c) => 
-                    [c.pk.eq(cmaidlist[0]),
-                        c.pk.eq(cmaidlist[1])]
-                ))
+            // const propertyresults = DataStore.query(Comparable, (c) => 
+            //     c.or((c) => 
+            //         [c.pk.eq(cmaidlist[0]),
+            //             c.pk.eq(cmaidlist[1])]
+            //     ))
 
 
 
             //return propertyresults
-            setPropertyCount(propertyresults)
+            //setPropertyCount(propertyresults)
         }
 
         getPropertyCount()
     }, [] )
 
-            function onDeleteHandler(e, pksk)
+    function onDeleteHandler(e, pksk)
     {
         console.log("delete clicked: {", pksk.pk, ":", pksk.sk, "}" )
         DeleteCma(pksk, setCmalist)
@@ -128,7 +127,7 @@ function Cmalist({ cmalist, setCmalist }) {
                                         //setOpenStorycardEdit(true)
                                     }}
                                 >
-                                    <Link to={`/cmaedit/${item.sk}`} style={{ textDecoration: 'none',color: 'inherit' }}>
+                                    <Link to={`/cmaedit/${item.id}`} style={{ textDecoration: 'none',color: 'inherit' }}>
                                         <EditIcon />
                                     </Link>
                                 </IconButton>

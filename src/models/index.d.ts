@@ -1,6 +1,6 @@
-import { ModelInit, MutableModel, __modelMeta__, CompositeIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
 
 
@@ -8,10 +8,10 @@ import { LazyLoading, LazyLoadingDisabled, AsyncItem } from "@aws-amplify/datast
 
 type EagerProperty = {
   readonly [__modelMeta__]: {
-    identifier: CompositeIdentifier<Property, ['pk', 'sk']>;
+    identifier: ManagedIdentifier<Property, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly pk: string;
+  readonly id: string;
   readonly sk: string;
   readonly num_bed?: number | null;
   readonly num_bath?: number | null;
@@ -23,17 +23,17 @@ type EagerProperty = {
   readonly unfininshed_basement_sqft?: number | null;
   readonly list_price?: number | null;
   readonly sale_price?: number | null;
-  readonly property_id: string;
+  readonly cmaID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyProperty = {
   readonly [__modelMeta__]: {
-    identifier: CompositeIdentifier<Property, ['pk', 'sk']>;
+    identifier: ManagedIdentifier<Property, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly pk: string;
+  readonly id: string;
   readonly sk: string;
   readonly num_bed?: number | null;
   readonly num_bath?: number | null;
@@ -45,7 +45,7 @@ type LazyProperty = {
   readonly unfininshed_basement_sqft?: number | null;
   readonly list_price?: number | null;
   readonly sale_price?: number | null;
-  readonly property_id: string;
+  readonly cmaID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -58,68 +58,38 @@ export declare const Property: (new (init: ModelInit<Property>) => Property) & {
 
 type EagerCMA = {
   readonly [__modelMeta__]: {
-    identifier: CompositeIdentifier<CMA, ['pk', 'sk']>;
+    identifier: ManagedIdentifier<CMA, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly pk: string;
+  readonly id: string;
   readonly sk: string;
-  readonly cma_label?: string | null;
   readonly client_name?: string | null;
+  readonly cma_label?: string | null;
+  readonly properties?: (Property | null)[] | null;
   readonly listing?: Property | null;
-  readonly cma_id: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly cMAListingPk?: string | null;
-  readonly cMAListingSk?: string | null;
+  readonly cMAListingId?: string | null;
 }
 
 type LazyCMA = {
   readonly [__modelMeta__]: {
-    identifier: CompositeIdentifier<CMA, ['pk', 'sk']>;
+    identifier: ManagedIdentifier<CMA, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly pk: string;
+  readonly id: string;
   readonly sk: string;
-  readonly cma_label?: string | null;
   readonly client_name?: string | null;
+  readonly cma_label?: string | null;
+  readonly properties: AsyncCollection<Property>;
   readonly listing: AsyncItem<Property | undefined>;
-  readonly cma_id: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly cMAListingPk?: string | null;
-  readonly cMAListingSk?: string | null;
+  readonly cMAListingId?: string | null;
 }
 
 export declare type CMA = LazyLoading extends LazyLoadingDisabled ? EagerCMA : LazyCMA
 
 export declare const CMA: (new (init: ModelInit<CMA>) => CMA) & {
   copyOf(source: CMA, mutator: (draft: MutableModel<CMA>) => MutableModel<CMA> | void): CMA;
-}
-
-type EagerComparable = {
-  readonly [__modelMeta__]: {
-    identifier: CompositeIdentifier<Comparable, ['pk', 'sk']>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly pk: string;
-  readonly sk: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyComparable = {
-  readonly [__modelMeta__]: {
-    identifier: CompositeIdentifier<Comparable, ['pk', 'sk']>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly pk: string;
-  readonly sk: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Comparable = LazyLoading extends LazyLoadingDisabled ? EagerComparable : LazyComparable
-
-export declare const Comparable: (new (init: ModelInit<Comparable>) => Comparable) & {
-  copyOf(source: Comparable, mutator: (draft: MutableModel<Comparable>) => MutableModel<Comparable> | void): Comparable;
 }

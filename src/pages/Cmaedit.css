@@ -1,0 +1,9 @@
+.cmaedit {
+	display: flex;
+}
+
+.cmaedit-propertycard-grid {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}

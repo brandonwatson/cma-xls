@@ -25,6 +25,8 @@ export const createProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -53,6 +55,8 @@ export const updateProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -81,6 +85,8 @@ export const deleteProperty = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      cMAComparable_propertiesPk
+      cMAComparable_propertiesSk
       owner
     }
   }
@@ -114,7 +120,36 @@ export const createCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -157,7 +192,36 @@ export const updateCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -200,7 +264,36 @@ export const deleteCMA = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        cMAComparable_propertiesPk
+        cMAComparable_propertiesSk
         owner
+      }
+      comparable_properties {
+        items {
+          pk
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          fininshed_basement_sqft
+          unfininshed_basement_sqft
+          list_price
+          sale_price
+          property_id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          cMAComparable_propertiesPk
+          cMAComparable_propertiesSk
+          owner
+        }
+        nextToken
+        startedAt
       }
       cma_id
       createdAt
@@ -210,57 +303,6 @@ export const deleteCMA = /* GraphQL */ `
       _lastChangedAt
       cMAListingPk
       cMAListingSk
-      owner
-    }
-  }
-`;
-export const createComparable = /* GraphQL */ `
-  mutation CreateComparable(
-    $input: CreateComparableInput!
-    $condition: ModelComparableConditionInput
-  ) {
-    createComparable(input: $input, condition: $condition) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const updateComparable = /* GraphQL */ `
-  mutation UpdateComparable(
-    $input: UpdateComparableInput!
-    $condition: ModelComparableConditionInput
-  ) {
-    updateComparable(input: $input, condition: $condition) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const deleteComparable = /* GraphQL */ `
-  mutation DeleteComparable(
-    $input: DeleteComparableInput!
-    $condition: ModelComparableConditionInput
-  ) {
-    deleteComparable(input: $input, condition: $condition) {
-      pk
-      sk
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }

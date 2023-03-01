@@ -3,10 +3,10 @@ export const schema = {
         "Property": {
             "name": "Property",
             "fields": {
-                "pk": {
-                    "name": "pk",
+                "id": {
+                    "name": "id",
                     "isArray": false,
-                    "type": "String",
+                    "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -87,8 +87,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "property_id": {
-                    "name": "property_id",
+                "cmaID": {
+                    "name": "cmaID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -121,33 +121,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "name": "byCMA",
                         "fields": [
-                            "pk",
-                            "sk"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "bySqftBySalePriceByBedByBath",
-                        "fields": [
-                            "total_sqft",
-                            "sale_price",
-                            "num_bed",
-                            "num_bath"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "bySalePriceByTotalSqftByBedByBath",
-                        "fields": [
-                            "sale_price",
-                            "total_sqft",
-                            "num_bed",
-                            "num_bath"
+                            "cmaID"
                         ]
                     }
                 },
@@ -155,31 +131,6 @@ export const schema = {
                     "type": "auth",
                     "properties": {
                         "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "read",
-                                    "delete"
-                                ]
-                            },
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "read"
-                                ]
-                            },
                             {
                                 "provider": "userPools",
                                 "ownerField": "owner",
@@ -191,6 +142,20 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "Admin"
+                                ],
+                                "operations": [
+                                    "read",
+                                    "create",
+                                    "update",
+                                    "delete"
+                                ]
                             }
                         ]
                     }
@@ -200,10 +165,10 @@ export const schema = {
         "CMA": {
             "name": "CMA",
             "fields": {
-                "pk": {
-                    "name": "pk",
+                "id": {
+                    "name": "id",
                     "isArray": false,
-                    "type": "String",
+                    "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -214,6 +179,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "client_name": {
+                    "name": "client_name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "cma_label": {
                     "name": "cma_label",
                     "isArray": false,
@@ -221,12 +193,21 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "client_name": {
-                    "name": "client_name",
-                    "isArray": false,
-                    "type": "String",
+                "properties": {
+                    "name": "properties",
+                    "isArray": true,
+                    "type": {
+                        "model": "Property"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "cmaID"
+                        ]
+                    }
                 },
                 "listing": {
                     "name": "listing",
@@ -239,21 +220,12 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_ONE",
                         "associatedWith": [
-                            "pk",
-                            "sk"
+                            "id"
                         ],
                         "targetNames": [
-                            "cMAListingPk",
-                            "cMAListingSk"
+                            "cMAListingId"
                         ]
                     }
-                },
-                "cma_id": {
-                    "name": "cma_id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -271,17 +243,10 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "cMAListingPk": {
-                    "name": "cMAListingPk",
+                "cMAListingId": {
+                    "name": "cMAListingId",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "cMAListingSk": {
-                    "name": "cMAListingSk",
-                    "isArray": false,
-                    "type": "String",
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -294,42 +259,9 @@ export const schema = {
                     "properties": {}
                 },
                 {
-                    "type": "key",
-                    "properties": {
-                        "fields": [
-                            "pk",
-                            "sk"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byClientByDate",
-                        "fields": [
-                            "client_name",
-                            "sk"
-                        ]
-                    }
-                },
-                {
                     "type": "auth",
                     "properties": {
                         "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "read",
-                                    "delete"
-                                ]
-                            },
                             {
                                 "provider": "userPools",
                                 "ownerField": "owner",
@@ -341,90 +273,19 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Comparable": {
-            "name": "Comparable",
-            "fields": {
-                "pk": {
-                    "name": "pk",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "sk": {
-                    "name": "sk",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Comparables",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "fields": [
-                            "pk",
-                            "sk"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
+                            },
                             {
                                 "groupClaim": "cognito:groups",
                                 "provider": "userPools",
                                 "allow": "groups",
                                 "groups": [
-                                    "Admins"
+                                    "Admin"
                                 ],
                                 "operations": [
-                                    "create",
-                                    "update",
                                     "read",
-                                    "delete"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
-                                "operations": [
                                     "create",
                                     "update",
-                                    "delete",
-                                    "read"
+                                    "delete"
                                 ]
                             }
                         ]
@@ -436,5 +297,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "906d1300814af79b4cfa25784ffedf77"
+    "version": "2b41b0ab7ec28ee9f44e781bd723e9c3"
 };

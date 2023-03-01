@@ -11,7 +11,7 @@ import FiberNewIcon from '@mui/icons-material/FiberNew'
 
 //amplify imports
 import { DataStore } from 'aws-amplify'
-import { CMA, Property, Comparable } from '../models/'
+import { CMA, Property } from '../models/' //removed Comparables
 
 //CMA-XLS components
 import Cmalist from '../components/Cmalist' 
@@ -28,8 +28,6 @@ async function InsertCma(cma)
     } catch (error) {
         console.log("error inserting CMA", error)
     }
-
-    return true
 }
 
 async function InitData(allProperties, user)
@@ -38,75 +36,84 @@ async function InitData(allProperties, user)
     let comparableProperties = []
     const compPropSet = allProperties.slice(1)
     
-    const listingProperty = new Property (allProperties.slice(0,1)[0])
-    console.log("listingProperty:", listingProperty)
+    //let listingProperty = new Property (allProperties.slice(0,1)[0])
+    const listingProperty = await DataStore.query(Property, c => c.sk.beginsWith("462 Shekel Ln##"))
+    console.log("listingProperty:", listingProperty[0])
     
-    try
-    {
-        await DataStore.save(listingProperty)
-        console.log("inserted listing property: ", listingProperty)
+    // try
+    // {
+    //     await DataStore.save(listingProperty)
+    //     console.log("inserted listing property: ", listingProperty)
+    // }
+    // catch (error)
+    // {
+    //     console.log("error writing listing property: ", error)
+    // }
+
+    // for (let compPropCount=0; compPropCount < compPropSet.length; compPropCount++)
+    // {
+    //     comparableProperties.push(new Property (compPropSet[compPropCount]))
+    //     //console.log("compProperties: ", comparableProperties[compPropCount])
+    //     // try {
+    //     //     await DataStore.save(comparableProperties[compPropCount])
+    //     //     console.log("Success inserting property: ", comparableProperties[compPropCount]);
+    //     // } catch (error) {
+    //     //     console.log("Error saving property", error);
+    //     // }
+    // }
+
+    let cma = new CMA (
+        {
+            //pk: user.attributes.email,
+            sk: "462 Shekel Ln##",
+            cma_label: listingProperty[0]["sk"].slice(0, listingProperty[0]["sk"].length-1),
+            client_name: "Jenkins",
+            listing: listingProperty,
+            //comparable_properties: [comparableProperties],
+        }
+    )
+    console.log("CMA v1: ", cma)
+
+    try {
+        cma["comparable_properties"] = comparableProperties
     }
     catch (error)
     {
-        console.log("error writing listing property: ", error)
+        console.log(error)
     }
 
-
-    for (let compPropCount=0; compPropCount < compPropSet.length; compPropCount++)
-    {
-        comparableProperties.push(new Property (compPropSet[compPropCount]))
-        console.log("compProperties: ", comparableProperties[compPropCount])
-        try {
-            await DataStore.save(comparableProperties[compPropCount])
-            console.log("Success inserting property: ", comparableProperties[compPropCount]);
-        } catch (error) {
-            console.log("Error saving property", error);
-        }
-    }
-
-    const cma = new CMA (
-        {
-            pk: user.attributes.email,
-            sk: new Date().toISOString(),
-            cma_label: listingProperty["pk"].slice(0, listingProperty["pk"].length-1),
-            client_name: "Jenkins",
-            listing: listingProperty,
-            cma_id: "b0dd4366-ccb4-47f3-a22e-56fdb4f7feb4"
-        }
-    )
-    console.log("CMA: ", cma)
-    await InsertCma(cma)
+    //console.log("CMA v2: ", cma)
+    //console.log("comparableProperties[0]: ", comparableProperties[0])
+    //await InsertCma(cma)
     // try {
     //     await DataStore.save(cma)
-    //     // console.log(cma.comparables)
     //     console.log("success inserting CMA")
     // } catch (error) {
     //     console.log("error inserting CMA", error)
     // }
 
+    // console.log("comparableProperties: ", comparableProperties.length)
+    // for (let propCmaCount=0; propCmaCount < comparableProperties.length; propCmaCount++)
+    // {     
+    //     //I gave up on many to many relationships and DataStore
+    //     //Will maintain my own mapping table of properties included in a CMA
+    //     const comparable = new Comparable({
+    //             pk: cma.cma_id,
+    //             sk: comparableProperties[propCmaCount].property_id
+    //     })
+    //     console.log("comparable: ", comparable)
 
-    console.log("comparableProperties: ", comparableProperties.length)
-    for (let propCmaCount=0; propCmaCount < comparableProperties.length; propCmaCount++)
-    {     
-        //I gave up on many to many relationships and DataStore
-        //Will maintain my own mapping table of properties included in a CMA
-        const comparable = new Comparable({
-                pk: cma.cma_id,
-                sk: comparableProperties[propCmaCount].property_id
-        })
-        console.log("comparable: ", comparable)
-
-        try {
-            await DataStore.save(comparable)
-            console.log("success inserting Comparable")
-        } catch (error) {
-            console.log("error inserting Comparable", error)
-        }
-    }
+    //     try {
+    //         await DataStore.save(comparable)
+    //         console.log("success inserting Comparable")
+    //     } catch (error) {
+    //         console.log("error inserting Comparable", error)
+    //     }
+    // }
 }
 
 
-function Home({signOut, user}) {
+function Home({ user}) {
     //I will need to use react query but for now just use fetch against the API
     const [cmalist, setCmalist] = useState([])
 
@@ -115,7 +122,6 @@ function Home({signOut, user}) {
             const allCmas = await DataStore.query(CMA)
             setCmalist(allCmas)
         }
-
         getCmas()
     }, []) //remember that this array are the state objects to watch to know when to rerun this
 
@@ -148,14 +154,14 @@ function Home({signOut, user}) {
 
     return (
         <Container>
-            {/* THIS IS COMMENTED OUT BECAUSE I DONT LIKE LOOKING AT THE BUTTON
+            THIS IS COMMENTED OUT BECAUSE I DONT LIKE LOOKING AT THE BUTTON
             <div>
                 <Button
                     variant='contained'
                     size='large'
                     onClick = {initDataHandler}>Initialize the App with New Data (DO NOT PUSH)
                 </Button>
-            </div> */}
+            </div>
             <div>
                 <Typography variant='h4'>Welcome to CMA-XLS Builder</Typography>
             </div>
