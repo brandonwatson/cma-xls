@@ -5,7 +5,8 @@ import { Routes, Route } from 'react-router-dom'
 
 //aws imports
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import { DataStore } from 'aws-amplify'
+//import { DataStore } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 import '@aws-amplify/ui-react/styles.css'
 
 //Compenent Pages
@@ -24,7 +25,6 @@ import '@fontsource/roboto/700.css'
 
 
 function App({user, signOut}) {
-  //DataStore.start()
   return (
     <>
       <Navbar signOut={signOut}/>

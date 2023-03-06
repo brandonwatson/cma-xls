@@ -6,90 +6,98 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 
 
 
-type EagerProperty = {
+type EagerPost = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Property, 'id'>;
+    identifier: ManagedIdentifier<Post, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly sk: string;
-  readonly num_bed?: number | null;
-  readonly num_bath?: number | null;
-  readonly total_sqft?: number | null;
-  readonly above_grade_sqft?: number | null;
-  readonly upper_sqft?: number | null;
-  readonly main_sqft?: number | null;
-  readonly fininshed_basement_sqft?: number | null;
-  readonly unfininshed_basement_sqft?: number | null;
-  readonly list_price?: number | null;
-  readonly sale_price?: number | null;
-  readonly cmaID: string;
+  readonly title: string;
+  readonly content?: string | null;
+  readonly tags?: (PostTags | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyProperty = {
+type LazyPost = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Property, 'id'>;
+    identifier: ManagedIdentifier<Post, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly sk: string;
-  readonly num_bed?: number | null;
-  readonly num_bath?: number | null;
-  readonly total_sqft?: number | null;
-  readonly above_grade_sqft?: number | null;
-  readonly upper_sqft?: number | null;
-  readonly main_sqft?: number | null;
-  readonly fininshed_basement_sqft?: number | null;
-  readonly unfininshed_basement_sqft?: number | null;
-  readonly list_price?: number | null;
-  readonly sale_price?: number | null;
-  readonly cmaID: string;
+  readonly title: string;
+  readonly content?: string | null;
+  readonly tags: AsyncCollection<PostTags>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type Property = LazyLoading extends LazyLoadingDisabled ? EagerProperty : LazyProperty
+export declare type Post = LazyLoading extends LazyLoadingDisabled ? EagerPost : LazyPost
 
-export declare const Property: (new (init: ModelInit<Property>) => Property) & {
-  copyOf(source: Property, mutator: (draft: MutableModel<Property>) => MutableModel<Property> | void): Property;
+export declare const Post: (new (init: ModelInit<Post>) => Post) & {
+  copyOf(source: Post, mutator: (draft: MutableModel<Post>) => MutableModel<Post> | void): Post;
 }
 
-type EagerCMA = {
+type EagerTag = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<CMA, 'id'>;
+    identifier: ManagedIdentifier<Tag, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly sk: string;
-  readonly client_name?: string | null;
-  readonly cma_label?: string | null;
-  readonly properties?: (Property | null)[] | null;
-  readonly listing?: Property | null;
+  readonly label: string;
+  readonly posts?: (PostTags | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly cMAListingId?: string | null;
 }
 
-type LazyCMA = {
+type LazyTag = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<CMA, 'id'>;
+    identifier: ManagedIdentifier<Tag, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly sk: string;
-  readonly client_name?: string | null;
-  readonly cma_label?: string | null;
-  readonly properties: AsyncCollection<Property>;
-  readonly listing: AsyncItem<Property | undefined>;
+  readonly label: string;
+  readonly posts: AsyncCollection<PostTags>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly cMAListingId?: string | null;
 }
 
-export declare type CMA = LazyLoading extends LazyLoadingDisabled ? EagerCMA : LazyCMA
+export declare type Tag = LazyLoading extends LazyLoadingDisabled ? EagerTag : LazyTag
 
-export declare const CMA: (new (init: ModelInit<CMA>) => CMA) & {
-  copyOf(source: CMA, mutator: (draft: MutableModel<CMA>) => MutableModel<CMA> | void): CMA;
+export declare const Tag: (new (init: ModelInit<Tag>) => Tag) & {
+  copyOf(source: Tag, mutator: (draft: MutableModel<Tag>) => MutableModel<Tag> | void): Tag;
+}
+
+type EagerPostTags = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<PostTags, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly postId?: string | null;
+  readonly tagId?: string | null;
+  readonly post: Post;
+  readonly tag: Tag;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyPostTags = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<PostTags, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly postId?: string | null;
+  readonly tagId?: string | null;
+  readonly post: AsyncItem<Post>;
+  readonly tag: AsyncItem<Tag>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type PostTags = LazyLoading extends LazyLoadingDisabled ? EagerPostTags : LazyPostTags
+
+export declare const PostTags: (new (init: ModelInit<PostTags>) => PostTags) & {
+  copyOf(source: PostTags, mutator: (draft: MutableModel<PostTags>) => MutableModel<PostTags> | void): PostTags;
 }

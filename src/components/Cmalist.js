@@ -15,34 +15,33 @@ import HomeIcon from '@mui/icons-material/Home'
 
 //amplify imports
 import { DataStore } from 'aws-amplify'
-import { CMA } from '../models/'
+//import { CMA } from '../models/'
 
 import Cma from './Cma'
 
 async function DeleteCma(pksk, setCmalist)
 {
-    const toDelete = await DataStore.query(CMA, {pk: pksk.pk, sk: pksk.sk})
+    // const toDelete = await DataStore.query(CMA, {pk: pksk.pk, sk: pksk.sk})
 
-    console.log("pksk toDelete: ", toDelete)
-    try {
-        DataStore.delete(toDelete)
-        const reducedCmaList = await DataStore.query(CMA)
-        console.log("reducedCmaList: ", reducedCmaList)
-        setCmalist(reducedCmaList)
-    }
-    catch (error)
-    {
-        console.log("deleting toDelete in Cmalist broke")
-        return false
-    }
-
+    // console.log("pksk toDelete: ", toDelete)
+    // try {
+    //     DataStore.delete(toDelete)
+    //     const reducedCmaList = await DataStore.query(CMA)
+    //     console.log("reducedCmaList: ", reducedCmaList)
+    //     setCmalist(reducedCmaList)
+    // }
+    // catch (error)
+    // {
+    //     console.log("deleting toDelete in Cmalist broke")
+    //     return false
+    // }
 }
 
 function Cmalist({ cmalist, setCmalist }) {
-    const [propertyCount, setPropertyCount] = useState([])
+    //const [propertyCount, setPropertyCount] = useState([])
 
-    const cmaidlist = cmalist.map(item => [item.cma_id])
-    let tmpval
+    //const cmaidlist = cmalist.map(item => [item.cma_id])
+    //let tmpval
 
     // const tmpval = cmaidlist.reduce((c, id) => c.id('eq', id))
     // console.log(tmpval)
@@ -72,12 +71,12 @@ function Cmalist({ cmalist, setCmalist }) {
 
     return (
         <div>
-            Property Count Vat: {propertyCount.length}
+            {/* Property Count Vat: {propertyCount.length} */}
             <Grid container spacing={2}>
                 {cmalist.map((item) => (
-                    <Grid xs={4} key={item.cma_id}>
+                    <Grid xs={4} key={Date.now()}>
                         <Card
-                            key={item.cma_id}
+                            key={item.id}
                             variant='outlined'
                             style={{backgroundColor: "lightgray"}}
                             sx={{ 
@@ -104,10 +103,10 @@ function Cmalist({ cmalist, setCmalist }) {
                                     <HomeIcon fontSize='large'/><span>: {item.cma_label}</span>
                                 </div>
                                 <div>
-                                    Properties Included: I need the right value here based on a query
+                                    Properties Included: 6
                                 </div>
                             </Typography>
-                            <Cma key={item.sk} item={item} />
+                            <Cma key={item.id} item={item} />
                             <CardActions disableSpacing>
                                 <IconButton
                                     aria-label="delete"

@@ -1,10 +1,99 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getCMA = /* GraphQL */ `
+  query GetCMA($id: ID!) {
+    getCMA(id: $id) {
+      id
+      sk
+      client_name
+      cma_label
+      comparables {
+        items {
+          id
+          cMAId
+          propertyId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      listing_address {
+        id
+        sk
+        num_bed
+        num_bath
+        total_sqft
+        above_grade_sqft
+        upper_sqft
+        main_sqft
+        finished_basement_sqft
+        unfinished_basement_sqft
+        list_price
+        sale_price
+        cma_reports {
+          nextToken
+        }
+        cmas {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      propertyCmasId
+      owner
+    }
+  }
+`;
+export const listCMAS = /* GraphQL */ `
+  query ListCMAS(
+    $filter: ModelCMAFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCMAS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        sk
+        client_name
+        cma_label
+        comparables {
+          nextToken
+        }
+        listing_address {
+          id
+          sk
+          num_bed
+          num_bath
+          total_sqft
+          above_grade_sqft
+          upper_sqft
+          main_sqft
+          finished_basement_sqft
+          unfinished_basement_sqft
+          list_price
+          sale_price
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        propertyCmasId
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const getProperty = /* GraphQL */ `
-  query GetProperty($pk: String!, $sk: String!) {
-    getProperty(pk: $pk, sk: $sk) {
-      pk
+  query GetProperty($id: ID!) {
+    getProperty(id: $id) {
+      id
       sk
       num_bed
       num_bath
@@ -12,41 +101,49 @@ export const getProperty = /* GraphQL */ `
       above_grade_sqft
       upper_sqft
       main_sqft
-      fininshed_basement_sqft
-      unfininshed_basement_sqft
+      finished_basement_sqft
+      unfinished_basement_sqft
       list_price
       sale_price
-      property_id
+      cma_reports {
+        items {
+          id
+          cMAId
+          propertyId
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      cmas {
+        items {
+          id
+          sk
+          client_name
+          cma_label
+          createdAt
+          updatedAt
+          propertyCmasId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      cMAComparable_propertiesPk
-      cMAComparable_propertiesSk
       owner
     }
   }
 `;
 export const listProperties = /* GraphQL */ `
   query ListProperties(
-    $pk: String
-    $sk: ModelStringKeyConditionInput
     $filter: ModelPropertyFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listProperties(
-      pk: $pk
-      sk: $sk
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listProperties(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        pk
+        id
         sk
         num_bed
         num_bath
@@ -54,99 +151,40 @@ export const listProperties = /* GraphQL */ `
         above_grade_sqft
         upper_sqft
         main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
+        finished_basement_sqft
+        unfinished_basement_sqft
         list_price
         sale_price
-        property_id
+        cma_reports {
+          nextToken
+        }
+        cmas {
+          nextToken
+        }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAComparable_propertiesPk
-        cMAComparable_propertiesSk
         owner
       }
       nextToken
-      startedAt
     }
   }
 `;
-export const syncProperties = /* GraphQL */ `
-  query SyncProperties(
-    $filter: ModelPropertyFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncProperties(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        pk
+export const getCmaProperties = /* GraphQL */ `
+  query GetCmaProperties($id: ID!) {
+    getCmaProperties(id: $id) {
+      id
+      cMAId
+      propertyId
+      cMA {
+        id
         sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        property_id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAComparable_propertiesPk
-        cMAComparable_propertiesSk
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getCMA = /* GraphQL */ `
-  query GetCMA($pk: String!, $sk: String!) {
-    getCMA(pk: $pk, sk: $sk) {
-      pk
-      sk
-      cma_label
-      client_name
-      listing {
-        pk
-        sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        property_id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAComparable_propertiesPk
-        cMAComparable_propertiesSk
-        owner
-      }
-      comparable_properties {
-        items {
-          pk
+        client_name
+        cma_label
+        comparables {
+          nextToken
+        }
+        listing_address {
+          id
           sk
           num_bed
           num_bath
@@ -154,59 +192,71 @@ export const getCMA = /* GraphQL */ `
           above_grade_sqft
           upper_sqft
           main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
+          finished_basement_sqft
+          unfinished_basement_sqft
           list_price
           sale_price
-          property_id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          cMAComparable_propertiesPk
-          cMAComparable_propertiesSk
           owner
         }
-        nextToken
-        startedAt
+        createdAt
+        updatedAt
+        propertyCmasId
+        owner
       }
-      cma_id
+      property {
+        id
+        sk
+        num_bed
+        num_bath
+        total_sqft
+        above_grade_sqft
+        upper_sqft
+        main_sqft
+        finished_basement_sqft
+        unfinished_basement_sqft
+        list_price
+        sale_price
+        cma_reports {
+          nextToken
+        }
+        cmas {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      cMAListingPk
-      cMAListingSk
       owner
     }
   }
 `;
-export const listCMAS = /* GraphQL */ `
-  query ListCMAS(
-    $pk: String
-    $sk: ModelStringKeyConditionInput
-    $filter: ModelCMAFilterInput
+export const listCmaProperties = /* GraphQL */ `
+  query ListCmaProperties(
+    $filter: ModelCmaPropertiesFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listCMAS(
-      pk: $pk
-      sk: $sk
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listCmaProperties(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        pk
-        sk
-        cma_label
-        client_name
-        listing {
-          pk
+        id
+        cMAId
+        propertyId
+        cMA {
+          id
+          sk
+          client_name
+          cma_label
+          createdAt
+          updatedAt
+          propertyCmasId
+          owner
+        }
+        property {
+          id
           sk
           num_bed
           num_bath
@@ -214,59 +264,53 @@ export const listCMAS = /* GraphQL */ `
           above_grade_sqft
           upper_sqft
           main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
+          finished_basement_sqft
+          unfinished_basement_sqft
           list_price
           sale_price
-          property_id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          cMAComparable_propertiesPk
-          cMAComparable_propertiesSk
           owner
         }
-        comparable_properties {
-          nextToken
-          startedAt
-        }
-        cma_id
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAListingPk
-        cMAListingSk
         owner
       }
       nextToken
-      startedAt
     }
   }
 `;
-export const syncCMAS = /* GraphQL */ `
-  query SyncCMAS(
-    $filter: ModelCMAFilterInput
+export const cmaPropertiesByCMAId = /* GraphQL */ `
+  query CmaPropertiesByCMAId(
+    $cMAId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCmaPropertiesFilterInput
     $limit: Int
     $nextToken: String
-    $lastSync: AWSTimestamp
   ) {
-    syncCMAS(
+    cmaPropertiesByCMAId(
+      cMAId: $cMAId
+      sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-      lastSync: $lastSync
     ) {
       items {
-        pk
-        sk
-        cma_label
-        client_name
-        listing {
-          pk
+        id
+        cMAId
+        propertyId
+        cMA {
+          id
+          sk
+          client_name
+          cma_label
+          createdAt
+          updatedAt
+          propertyCmasId
+          owner
+        }
+        property {
+          id
           sk
           num_bed
           num_bath
@@ -274,153 +318,53 @@ export const syncCMAS = /* GraphQL */ `
           above_grade_sqft
           upper_sqft
           main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
+          finished_basement_sqft
+          unfinished_basement_sqft
           list_price
           sale_price
-          property_id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          cMAComparable_propertiesPk
-          cMAComparable_propertiesSk
           owner
         }
-        comparable_properties {
-          nextToken
-          startedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const cmaPropertiesByPropertyId = /* GraphQL */ `
+  query CmaPropertiesByPropertyId(
+    $propertyId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCmaPropertiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    cmaPropertiesByPropertyId(
+      propertyId: $propertyId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        cMAId
+        propertyId
+        cMA {
+          id
+          sk
+          client_name
+          cma_label
+          createdAt
+          updatedAt
+          propertyCmasId
+          owner
         }
-        cma_id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAListingPk
-        cMAListingSk
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const propertiesByTotal_sqftAndSale_priceAndNum_bedAndNum_bath = /* GraphQL */ `
-  query PropertiesByTotal_sqftAndSale_priceAndNum_bedAndNum_bath(
-    $total_sqft: Int!
-    $sale_priceNum_bedNum_bath: ModelPropertyBySqftBySalePriceByBedByBathCompositeKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelPropertyFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    propertiesByTotal_sqftAndSale_priceAndNum_bedAndNum_bath(
-      total_sqft: $total_sqft
-      sale_priceNum_bedNum_bath: $sale_priceNum_bedNum_bath
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        pk
-        sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        property_id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAComparable_propertiesPk
-        cMAComparable_propertiesSk
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const propertiesBySale_priceAndTotal_sqftAndNum_bedAndNum_bath = /* GraphQL */ `
-  query PropertiesBySale_priceAndTotal_sqftAndNum_bedAndNum_bath(
-    $sale_price: Int!
-    $total_sqftNum_bedNum_bath: ModelPropertyBySalePriceByTotalSqftByBedByBathCompositeKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelPropertyFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    propertiesBySale_priceAndTotal_sqftAndNum_bedAndNum_bath(
-      sale_price: $sale_price
-      total_sqftNum_bedNum_bath: $total_sqftNum_bedNum_bath
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        pk
-        sk
-        num_bed
-        num_bath
-        total_sqft
-        above_grade_sqft
-        upper_sqft
-        main_sqft
-        fininshed_basement_sqft
-        unfininshed_basement_sqft
-        list_price
-        sale_price
-        property_id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAComparable_propertiesPk
-        cMAComparable_propertiesSk
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const cMASByClient_nameAndSk = /* GraphQL */ `
-  query CMASByClient_nameAndSk(
-    $client_name: String!
-    $sk: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCMAFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    cMASByClient_nameAndSk(
-      client_name: $client_name
-      sk: $sk
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        pk
-        sk
-        cma_label
-        client_name
-        listing {
-          pk
+        property {
+          id
           sk
           num_bed
           num_bath
@@ -428,36 +372,19 @@ export const cMASByClient_nameAndSk = /* GraphQL */ `
           above_grade_sqft
           upper_sqft
           main_sqft
-          fininshed_basement_sqft
-          unfininshed_basement_sqft
+          finished_basement_sqft
+          unfinished_basement_sqft
           list_price
           sale_price
-          property_id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          cMAComparable_propertiesPk
-          cMAComparable_propertiesSk
           owner
         }
-        comparable_properties {
-          nextToken
-          startedAt
-        }
-        cma_id
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        cMAListingPk
-        cMAListingSk
         owner
       }
       nextToken
-      startedAt
     }
   }
 `;

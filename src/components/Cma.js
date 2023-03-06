@@ -10,7 +10,7 @@ import { DataStore } from 'aws-amplify'
 //import { Comparable } from '../models/'
 
 
-function Cma({item}) {
+function Cma({ item }) {
     const [comparables, setComparables] = useState([])
 
     // useEffect(() => {
@@ -26,7 +26,7 @@ function Cma({item}) {
         <div>
             <CardContent>
                 <Typography variant="h6">
-                    Properties Included: {comparables.length}
+                    Properties Included: {item.cMAListingId}
                 </Typography>
             </CardContent>
         </div>

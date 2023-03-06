@@ -1,0 +1,51 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+	globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Property
+	@model
+	@auth(
+		rules: [
+			{ allow: owner }
+			{
+				allow: groups
+				groups: ["Admin"]
+				operations: [read, create, update, delete]
+			}
+		]
+	) {
+	id: ID! @primaryKey(sortKeyFields: ["sk"])
+	sk: String! #use this for sk of form ada1#add2#zip
+	num_bed: Float
+	num_bath: Float
+	total_sqft: Int
+	above_grade_sqft: Int
+	upper_sqft: Int
+	main_sqft: Int
+	fininshed_basement_sqft: Int
+	unfininshed_basement_sqft: Int
+	list_price: Int
+	sale_price: Int
+}
+
+type CMA
+	@model
+	@auth(
+		rules: [
+			{ allow: owner }
+			{
+				allow: groups
+				groups: ["Admin"]
+				operations: [read, create, update, delete]
+			}
+		]
+	) {
+	pk: String! @primaryKey(sortKeyFields: ["sk"]) #changed this to be the user name for broader query ability
+	sk: String! #use this for sk of form ada1#add2#zip
+	#id: ID! #want to have every CMA have it's own autogeenrated ID; will intergrate later as it is non-destructive
+	client_name: String
+	cma_label: String
+	properties: [Property] @hasMany(indexName: "byProperty", fields:)
+	listing: Property @hasOne(fields:"id", "sk")
+}

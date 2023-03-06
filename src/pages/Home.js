@@ -10,120 +10,115 @@ import { Typography, Container, Button } from '@mui/material'
 import FiberNewIcon from '@mui/icons-material/FiberNew'
 
 //amplify imports
-import { DataStore } from 'aws-amplify'
-import { CMA, Property } from '../models/' //removed Comparables
+//import { CMA, Property, CmaProperties } from '../models/' //removed Comparables
+import { createProperty, updateProperty } from '../graphql/mutations'
+import { listProperties, getProperty } from '../graphql/queries'
+
+import { createCMA, updateCMA } from '../graphql/mutations'
+import { listCMAS, getCMA } from '../graphql/queries'
+
+import { createCmaProperties, updateCmaProperties } from '../graphql/mutations'
+import { listCmaProperties, getCmaProperties } from '../graphql/queries'
 
 //CMA-XLS components
 import Cmalist from '../components/Cmalist' 
 
 //TEST DATA INIT
 import INIT_DATA from '../dynamo/amplify_init_data'
+import { API, graphqlOperation } from 'aws-amplify'
 
-async function InsertCma(cma)
+
+async function insertProperty(data)
 {
+    try
+    {
+        const result = await API.graphql(graphqlOperation(createProperty, {
+            input: data
+        }))
+        
+        console.log("inserted listing property: ", result)
+    }
+    catch (error)
+    {
+        console.log("error writing listing property: ", error)
+    }
+}
+
+async function insertCma(data)
+{
+    console.log("cma: ", data)
+
     try {
-        await DataStore.save(cma)
-        // console.log(cma.comparables)
-        console.log("success inserting CMA")
+        const result = await API.graphql(graphqlOperation(createCMA, {
+            input: data
+        }))
+        console.log("success inserting CMA: ", result)
     } catch (error) {
         console.log("error inserting CMA", error)
+    }
+}
+
+async function insertCmaProperty(data)
+{
+    console.log("CmaProperty: ", data)
+
+    try {
+        const result = await API.graphql(graphqlOperation(createCmaProperties, {
+            input: data
+        }))
+        console.log("Success inserting CmaProperty: ", result);
+    } catch (error) {
+        console.log("Error saving CmaProperty", error);
     }
 }
 
 async function InitData(allProperties, user)
 {
     //This is sample data what will be removed
-    let comparableProperties = []
-    const compPropSet = allProperties.slice(1)
+    const listingProperty = allProperties.slice(0,1)[0]
+    await insertProperty(listingProperty)
     
-    //let listingProperty = new Property (allProperties.slice(0,1)[0])
-    const listingProperty = await DataStore.query(Property, c => c.sk.beginsWith("462 Shekel Ln##"))
-    console.log("listingProperty:", listingProperty[0])
-    
-    // try
-    // {
-    //     await DataStore.save(listingProperty)
-    //     console.log("inserted listing property: ", listingProperty)
-    // }
-    // catch (error)
-    // {
-    //     console.log("error writing listing property: ", error)
-    // }
-
-    // for (let compPropCount=0; compPropCount < compPropSet.length; compPropCount++)
-    // {
-    //     comparableProperties.push(new Property (compPropSet[compPropCount]))
-    //     //console.log("compProperties: ", comparableProperties[compPropCount])
-    //     // try {
-    //     //     await DataStore.save(comparableProperties[compPropCount])
-    //     //     console.log("Success inserting property: ", comparableProperties[compPropCount]);
-    //     // } catch (error) {
-    //     //     console.log("Error saving property", error);
-    //     // }
-    // }
-
-    let cma = new CMA (
-        {
-            //pk: user.attributes.email,
-            sk: "462 Shekel Ln##",
-            cma_label: listingProperty[0]["sk"].slice(0, listingProperty[0]["sk"].length-1),
-            client_name: "Jenkins",
-            listing: listingProperty,
-            //comparable_properties: [comparableProperties],
-        }
-    )
-    console.log("CMA v1: ", cma)
-
-    try {
-        cma["comparable_properties"] = comparableProperties
-    }
-    catch (error)
+    const comparableProperties = allProperties.slice(1)
+    for (let compPropCount=0; compPropCount < comparableProperties.length; compPropCount++)
     {
-        console.log(error)
+        //await insertProperty(comparableProperties[compPropCount])
     }
 
-    //console.log("CMA v2: ", cma)
-    //console.log("comparableProperties[0]: ", comparableProperties[0])
-    //await InsertCma(cma)
-    // try {
-    //     await DataStore.save(cma)
-    //     console.log("success inserting CMA")
-    // } catch (error) {
-    //     console.log("error inserting CMA", error)
-    // }
+    // console.log("listingProperty:", listingProperty)
+    // console.log("comparabeProperties: ", comparableProperties)
 
-    // console.log("comparableProperties: ", comparableProperties.length)
-    // for (let propCmaCount=0; propCmaCount < comparableProperties.length; propCmaCount++)
-    // {     
-    //     //I gave up on many to many relationships and DataStore
-    //     //Will maintain my own mapping table of properties included in a CMA
-    //     const comparable = new Comparable({
-    //             pk: cma.cma_id,
-    //             sk: comparableProperties[propCmaCount].property_id
-    //     })
-    //     console.log("comparable: ", comparable)
+    const cma = {
+            id: "64d2e1d0-ce13-43f3-9e93-bc1d7f572958",
+            sk: listingProperty["sk"],
+            client_name: "Jenkins",
+            cma_label: listingProperty["sk"].slice(0, listingProperty["sk"].length-7),
+            //properties
+            propertyCmasId: listingProperty.id
+        }
+    //await insertCma(cma)
 
-    //     try {
-    //         await DataStore.save(comparable)
-    //         console.log("success inserting Comparable")
-    //     } catch (error) {
-    //         console.log("error inserting Comparable", error)
-    //     }
-    // }
+    for (let CmaPropertyCount = 0; CmaPropertyCount < comparableProperties.length; CmaPropertyCount++)
+    {
+        const CmaProperty = {
+            cMAId: cma.id,
+            propertyId: comparableProperties[CmaPropertyCount].id
+        }
+
+        await insertCmaProperty(CmaProperty)
+    }
 }
 
-
-function Home({ user}) {
+function Home({ user }) {
     //I will need to use react query but for now just use fetch against the API
-    const [cmalist, setCmalist] = useState([])
+    // const [cmalist, setCmalist] = useState([])
 
-    useEffect(() => {
-        async function getCmas() {
-            const allCmas = await DataStore.query(CMA)
-            setCmalist(allCmas)
-        }
-        getCmas()
-    }, []) //remember that this array are the state objects to watch to know when to rerun this
+    // useEffect(() => {
+    //     async function getCmas() {
+    //         const allCmas = await DataStore.query(CMA)
+    //         setCmalist(allCmas)
+    //     }
+    //     getCmas()
+    // }, []) //remember that this array are the state objects to watch to know when to rerun this
 
     function initDataHandler()
     {
@@ -133,23 +128,23 @@ function Home({ user}) {
     function newCmaClickHandler()
     {
         //console.log("uuid: ", uuidv4())
-        const newCma = new CMA({
-            pk: user.attributes.email,
-            sk: new Date().toISOString(),
-            client_name: "Input Client Name",
-            cma_label: "Listing Property Address",
-            cma_id: uuidv4()
-            //no added target listing property at this time
-        })
+        // const newCma = new CMA({
+        //     pk: user.attributes.email,
+        //     sk: new Date().toISOString(),
+        //     client_name: "Input Client Name",
+        //     cma_label: "Listing Property Address",
+        //     cma_id: uuidv4()
+        //     //no added target listing property at this time
+        // })
 
-        console.log(`New CMA button clicked: `, newCma)
-        if (InsertCma(newCma))
-        {
-            setCmalist([...cmalist, newCma])
-        }
-        else{
-            console.log("something did not come back from the write to remote dba in InsertCma")
-        }
+        // console.log(`New CMA button clicked: `, newCma)
+        // if (InsertCma(newCma))
+        // {
+        //     setCmalist([...cmalist, newCma])
+        // }
+        // else{
+        //     console.log("something did not come back from the write to remote dba in InsertCma")
+        // }
     }
 
     return (
@@ -174,7 +169,7 @@ function Home({ user}) {
                 </Button>
                 <Typography variant='h4'>{user.attributes.email}'s CMAs</Typography>
                 <br/>
-                <Cmalist cmalist={cmalist} setCmalist={setCmalist} />
+                {/* <Cmalist cmalist={cmalist} setCmalist={setCmalist} /> */}
             </div>
         </Container>
     )

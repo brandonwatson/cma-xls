@@ -56,6 +56,11 @@ function Cmaedit({ user }) {
         getOneCma()
     }, []) //remember that this array are the state objects to watch to know when to rerun this
 
+    function submitHandler()
+    {
+
+    }
+
     // <Cma key={item.sk} item={item} />
     return (
         <div>
@@ -67,7 +72,11 @@ function Cmaedit({ user }) {
             </div>
             <div>
                 Insert the NEW property FORM here
-                <Button variant="contained" startIcon={<AddIcon />} sx={{float: "right", marginRight: "20px"}}>
+                <Button variant="contained"
+                    startIcon={<AddIcon />}
+                    sx={{float: "right", marginRight: "20px"}}
+                    onSubmit={submitHandler}
+                >
                     Add New Property
                 </Button>
             </div>

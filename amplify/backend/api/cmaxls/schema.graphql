@@ -1,30 +1,8 @@
-type Property
-	@model
-	@auth(
-		rules: [
-			{ allow: owner }
-			{
-				allow: groups
-				groups: ["Admin"]
-				operations: [read, create, update, delete]
-			}
-		]
-	) {
-	id: ID! @primaryKey(sortKeyFields: ["sk"])
-	sk: String! #use this for sk of form ada1#add2#zip
-	num_bed: Float
-	num_bath: Float
-	total_sqft: Int
-	above_grade_sqft: Int
-	upper_sqft: Int
-	main_sqft: Int
-	fininshed_basement_sqft: Int
-	unfininshed_basement_sqft: Int
-	list_price: Int
-	sale_price: Int
-	cmaID: ID @index(name: "byCMA")
-}
-
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+	globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
 type CMA
 	@model
 	@auth(
@@ -37,10 +15,45 @@ type CMA
 			}
 		]
 	) {
-	id: ID! @primaryKey(sortKeyFields: ["sk"])
+	id: ID! #want to have every CMA have it's own autogeenrated ID; will intergrate later as it is non-destructive
 	sk: String! #use this for sk of form ada1#add2#zip
+	#id: ID! #want to have every CMA have it's own autogeenrated ID; will intergrate later as it is non-destructive
 	client_name: String
 	cma_label: String
-	properties: [Property] @hasMany(indexName: "byCMA", fields: ["id"])
-	listing: Property @hasOne
+	comparables: [Property] @manyToMany(relationName: "CmaProperties")
+	listing_address: Property @belongsTo #A CMA basically belongs to a property, which is fine for this use case
+	#listing: Property @hasOne(fields: ["id", "sk"])
 }
+
+type Property
+	@model
+	@auth(
+		rules: [
+			{ allow: owner, operations: [read, create, update] }
+			{
+				allow: groups
+				groups: ["Admin"]
+				operations: [read, create, update, delete]
+			}
+			{ allow: groups, groups: ["Users"], operations: [read, update] }
+		]
+	) {
+	id: ID!
+	sk: String! #use this for sk as the ADDRESS in the form of: ada1#add2#zip
+	num_bed: Float
+	num_bath: Float
+	total_sqft: Int
+	above_grade_sqft: Int
+	upper_sqft: Int
+	main_sqft: Int
+	finished_basement_sqft: Int
+	unfinished_basement_sqft: Int
+	list_price: Int
+	sale_price: Int
+	cma_reports: [CMA] @manyToMany(relationName: "CmaProperties") #"CmaProperty" is the new type for the join table
+	cmas: [CMA] @hasMany #a single property may have many CMAs created against it
+}
+
+# what I think will happen is I get a CmaProperty table created in the background
+# new content can be pushed by creating the Cma without the comparables
+# then create the Property without the cmas using mutations

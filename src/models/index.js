@@ -4,9 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Property, CMA } = initSchema(schema);
+const { Post, Tag, PostTags } = initSchema(schema);
 
 export {
-  Property,
-  CMA
+  Post,
+  Tag,
+  PostTags
 };
