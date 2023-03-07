@@ -17,8 +17,8 @@ import Paper from '@mui/material/Paper'
 
 
 //amplify imports
-//import { DataStore } from 'aws-amplify'
-//import { CMA } from '../models/'
+import { API, graphqlOperation } from 'aws-amplify'
+import { customGetCma } from '../customgraphql/queries'
 
 //test data - REMOVE LATER
 import SAMPLE_CMAS from '../dynamo/amplify_sample_cmas'
@@ -34,41 +34,39 @@ function Cmaedit({ user }) {
     const { id } = useParams()
 
     const [cma, setCma] = useState([])
-    const [listing, setListing] = useState([])
-    const [comparables, setComparables] = useState([])
 
-    const testdataobject = SAMPLE_CMAS["cmas"].filter(item => item["cma"]["id"] == id)[0] //.filter(item => item["cma"]["id"] === id)
-    
     useEffect(() => {
-        async function getOneCma() {
-            //const oneCma = await DataStore.query(CMA, {pk: pk, sk: sk })
-            
-            const oneCma = testdataobject["cma"]
-            setCma(oneCma)
-
-            const thelisting = testdataobject["listing"]
-            setListing(thelisting)
-            // const allComparables = await DataStore.query(Comparable, c => c.pk.eq(oneCma.cma_id))
-            const allComparables = testdataobject["comparable_properties"]
-            setComparables(allComparables)
+        async function getSingleCma() {
+            try
+            {
+                const oneCma = await API.graphql(graphqlOperation(customGetCma, {
+                    id: id
+                }))
+                setCma(oneCma.data.getCMA)
+            }
+            catch (error)
+            {
+                console.log("error getting single CMA: ", error)
+            }
         }
 
-        getOneCma()
+        getSingleCma()
     }, []) //remember that this array are the state objects to watch to know when to rerun this
-
+    
     function submitHandler()
     {
 
     }
 
-    // <Cma key={item.sk} item={item} />
+    //console.log("cma: ", cma)
+
     return (
         <div>
             <div>
                 <Button variant="contained" startIcon={<AssessmentIcon />} sx={{float: "left", marginTop: "10px", marginLeft: "10px"}}>
                         Generate Excel CMA
                 </Button>
-                Listing: {cma.cma_label}, Client: {cma.client_name}, Properties: {comparables.length}
+                Listing: {cma.cma_label}, Client: {cma.client_name}, Properties: {cma.comparables.items.length}
             </div>
             <div>
                 Insert the NEW property FORM here
@@ -89,12 +87,12 @@ function Cmaedit({ user }) {
                         marginTop: 4
                 }}>
 
-                        {comparables.map((item) => (
-                            <Propertycard
-                                key={item.id}
-                                item={item}
-                            />
-                        ))}
+                {cma.comparables.items.map((item) => (
+                    <Propertycard
+                        key={item.property.id}
+                        item={item.property}
+                    />
+                ))}
             </Grid>
         </div>
     )

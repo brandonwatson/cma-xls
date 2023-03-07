@@ -82,7 +82,7 @@ const INIT_DATA = {
             "sale_price": 822000,
             "total_sqft": 2452,
             "unfinished_basement_sqft": 0,
-            "upper_sqft": 2000,
+            "upper_sqft": 452,
         },
         {
             "id": "9f4159c7-ab5a-4b5d-acea-919495506c5d",
@@ -104,7 +104,7 @@ const INIT_DATA = {
             "above_grade_sqft": 2039,
             "finished_basement_sqft": 0,
             "list_price": 1089000,
-            "main_sqft": 2000,
+            "main_sqft": 1297,
             "num_bath": 3,
             "num_bed": 4,
             "sale_price": 1056500,

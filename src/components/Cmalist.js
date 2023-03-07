@@ -14,8 +14,8 @@ import PersonIcon from '@mui/icons-material/Person'
 import HomeIcon from '@mui/icons-material/Home'
 
 //amplify imports
-import { DataStore } from 'aws-amplify'
-//import { CMA } from '../models/'
+import { listCMAS, getCMA } from '../graphql/queries'
+import { API, graphqlOperation } from 'aws-amplify'
 
 import Cma from './Cma'
 
@@ -46,28 +46,33 @@ function Cmalist({ cmalist, setCmalist }) {
     // const tmpval = cmaidlist.reduce((c, id) => c.id('eq', id))
     // console.log(tmpval)
     
-    useEffect(() => {
-        async function getPropertyCount() {
-            // const propertyresults = DataStore.query(Comparable, (c) => 
-            //     c.or((c) => 
-            //         [c.pk.eq(cmaidlist[0]),
-            //             c.pk.eq(cmaidlist[1])]
-            //     ))
+    // useEffect(() => {
+    //     async function getPropertyCount() {
+    //         const propertyresults = API.graphql(graphqlOperation(listCMAS
+    //         ))
+
+    //         // const propertyresults = DataStore.query(Comparable, (c) => 
+    //         //     c.or((c) => 
+    //         //         [c.pk.eq(cmaidlist[0]),
+    //         //             c.pk.eq(cmaidlist[1])]
+    //         //     ))
 
 
 
-            //return propertyresults
-            //setPropertyCount(propertyresults)
-        }
+    //         //return propertyresults
+    //         setPropertyCount(propertyresults)
+    //     }
 
-        getPropertyCount()
-    }, [] )
+    //     getPropertyCount()
+    // }, [] )
 
     function onDeleteHandler(e, pksk)
     {
         console.log("delete clicked: {", pksk.pk, ":", pksk.sk, "}" )
         DeleteCma(pksk, setCmalist)
     }
+
+    console.log("cmalist: ", cmalist)
 
     return (
         <div>
@@ -103,10 +108,15 @@ function Cmalist({ cmalist, setCmalist }) {
                                     <HomeIcon fontSize='large'/><span>: {item.cma_label}</span>
                                 </div>
                                 <div>
-                                    Properties Included: 6
+                                    Properties Included: {item.comparables.items.length}
                                 </div>
                             </Typography>
-                            <Cma key={item.id} item={item} />
+                            <Typography variant='subtitle2'>
+                                List Price: <span>{item.listing_address.list_price} </span>
+                            </Typography>
+                            
+                            {/* <Cma key={item.id} item={item} /> */}
+                            
                             <CardActions disableSpacing>
                                 <IconButton
                                     aria-label="delete"
@@ -126,7 +136,7 @@ function Cmalist({ cmalist, setCmalist }) {
                                         //setOpenStorycardEdit(true)
                                     }}
                                 >
-                                    <Link to={`/cmaedit/${item.id}`} style={{ textDecoration: 'none',color: 'inherit' }}>
+                                    <Link to={`/cmaedit/${item.id}`} item={ item } style={{ textDecoration: 'none',color: 'inherit' }}>
                                         <EditIcon />
                                     </Link>
                                 </IconButton>

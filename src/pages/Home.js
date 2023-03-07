@@ -11,6 +11,8 @@ import FiberNewIcon from '@mui/icons-material/FiberNew'
 
 //amplify imports
 //import { CMA, Property, CmaProperties } from '../models/' //removed Comparables
+import { API, graphqlOperation } from 'aws-amplify'
+
 import { createProperty, updateProperty } from '../graphql/mutations'
 import { listProperties, getProperty } from '../graphql/queries'
 
@@ -20,12 +22,14 @@ import { listCMAS, getCMA } from '../graphql/queries'
 import { createCmaProperties, updateCmaProperties } from '../graphql/mutations'
 import { listCmaProperties, getCmaProperties } from '../graphql/queries'
 
+//custom graphql
+import { customListCmas } from '../customgraphql/queries'
+
 //CMA-XLS components
 import Cmalist from '../components/Cmalist' 
 
 //TEST DATA INIT
 import INIT_DATA from '../dynamo/amplify_init_data'
-import { API, graphqlOperation } from 'aws-amplify'
 
 
 async function insertProperty(data)
@@ -81,7 +85,7 @@ async function InitData(allProperties, user)
     const comparableProperties = allProperties.slice(1)
     for (let compPropCount=0; compPropCount < comparableProperties.length; compPropCount++)
     {
-        //await insertProperty(comparableProperties[compPropCount])
+        await insertProperty(comparableProperties[compPropCount])
     }
 
     // console.log("listingProperty:", listingProperty)
@@ -95,7 +99,7 @@ async function InitData(allProperties, user)
             //properties
             propertyCmasId: listingProperty.id
         }
-    //await insertCma(cma)
+    await insertCma(cma)
 
     for (let CmaPropertyCount = 0; CmaPropertyCount < comparableProperties.length; CmaPropertyCount++)
     {
@@ -110,15 +114,15 @@ async function InitData(allProperties, user)
 
 function Home({ user }) {
     //I will need to use react query but for now just use fetch against the API
-    // const [cmalist, setCmalist] = useState([])
+    const [cmalist, setCmalist] = useState([])
 
-    // useEffect(() => {
-    //     async function getCmas() {
-    //         const allCmas = await DataStore.query(CMA)
-    //         setCmalist(allCmas)
-    //     }
-    //     getCmas()
-    // }, []) //remember that this array are the state objects to watch to know when to rerun this
+    useEffect(() => {
+        async function getCmas() {
+            const allCmas = await API.graphql(graphqlOperation(customListCmas))
+            setCmalist(allCmas.data.listCMAS.items)
+        }
+        getCmas()
+    }, []) //remember that this array are the state objects to watch to know when to rerun this
 
     function initDataHandler()
     {
@@ -129,12 +133,9 @@ function Home({ user }) {
     {
         //console.log("uuid: ", uuidv4())
         // const newCma = new CMA({
-        //     pk: user.attributes.email,
-        //     sk: new Date().toISOString(),
+        //     sk: "123 Sample St##",
         //     client_name: "Input Client Name",
-        //     cma_label: "Listing Property Address",
-        //     cma_id: uuidv4()
-        //     //no added target listing property at this time
+        //     cma_label: "123 Sample St",
         // })
 
         // console.log(`New CMA button clicked: `, newCma)
@@ -169,7 +170,7 @@ function Home({ user }) {
                 </Button>
                 <Typography variant='h4'>{user.attributes.email}'s CMAs</Typography>
                 <br/>
-                {/* <Cmalist cmalist={cmalist} setCmalist={setCmalist} /> */}
+                <Cmalist cmalist={cmalist} setCmalist={setCmalist} />
             </div>
         </Container>
     )
